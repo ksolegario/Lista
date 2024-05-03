@@ -53,16 +53,30 @@ public class NewItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (photoSelected == null) {
-                    Toast.makeText(NewItemActivity.this, "É necessário selecionar uma imagem!", Toast.LENGTH_LONG) .show();
+                    Toast.makeText(NewItemActivity.this, "É necessário selecionar uma imagem!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 EditText editText = findViewById(R.id.etTitle);
                 String title = editText.getText(). toString();
                 if (title.isEmpty()) {
-                    Toast.makeText(NewItemActivity.this, "É necessário inserir um título", Toast.LENGTH_LONG);
+                    Toast.makeText(NewItemActivity.this, "É necessário inserir um título", Toast.LENGTH_LONG).show();
                     return;
                 }
+
+                EditText etDesc = findViewById(R.id.etDesc);
+                String description = etDesc.getText().toString();
+                if (description.isEmpty()) {
+                    Toast.makeText(NewItemActivity.this, "É necessario uma descrição", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                Intent i = new Intent();
+                i.setData(photoSelected);
+                i.putExtra("title", title);
+                i.putExtra("description", description);
+                setResult(Activity.RESULT_OK,i);
+                finish();
             }
         });
     }
