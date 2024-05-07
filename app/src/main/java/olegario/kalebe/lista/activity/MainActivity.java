@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     List<MyItem> itens = new ArrayList<>();
     MyAdapter myAdapter;
 
-
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +68,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == NEW_ITEM_REQUEST) {
+        if (requestCode == NEW_ITEM_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
                 MyItem myItem = new MyItem();
                 myItem.title = data.getStringExtra("title");
                 myItem.description = data.getStringExtra("description");
                 myItem.photo = data.getData();
                 itens.add(myItem);
+                myAdapter.notifyItemInserted(itens.size()-1);
             }
         }
     }
