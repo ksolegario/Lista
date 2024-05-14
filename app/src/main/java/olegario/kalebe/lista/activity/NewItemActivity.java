@@ -24,6 +24,7 @@ import olegario.kalebe.lista.R;
 public class NewItemActivity extends AppCompatActivity {
 
     static int PHOTO_PICKER_REQUEST = 1;
+    // atributo photoSelect do tipo Uri(um endereço que esta localizado em outras apps). Dessa forma, photoSelect guardara o endereço a foto selcionada pelo usuario, e nao a foto em si
     Uri photoSelected = null;
 
     @Override
@@ -32,12 +33,16 @@ public class NewItemActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_item);
 
+        //obtendo imagem do botão pelo seu id
         ImageButton imgCI = findViewById(R.id.imgCI);
         imgCI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //executando a galeria para escolha da foto com um intent explitico
                 Intent photoPickerIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                //foto apenas do tipo "image/*"(qaulquer tipo de imagem)
                 photoPickerIntent.setType("image/*");
+                //executando a intent com o metodo starActivityForResult que entrega uma imagem de documentos do Android
                 startActivityForResult(photoPickerIntent, PHOTO_PICKER_REQUEST);
             }
 

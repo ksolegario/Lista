@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     List<MyItem> itens = new ArrayList<>();
     MyAdapter myAdapter;
 
-    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +41,16 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        // obtendo o baitao fab pelo seu id
         FloatingActionButton fabAddItem = findViewById(R.id.fabAddNewItem);
         fabAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
+                // intent explicito para navegar para NewItemActivity
                 Intent i = new Intent(MainActivity.this, NewItemActivity.class);
+
+                //executando o intent com metodo especial: startActivityForResult que fara com qoue a Activity destino ira retomar com dados em algum momento para a activity que iniciou a navegação
                 startActivityForResult(i, NEW_ITEM_REQUEST);
             }
         });
