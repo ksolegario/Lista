@@ -53,10 +53,12 @@ public class NewItemActivity extends AppCompatActivity {
             return insets;
         });
 
+        //obtendo Botão
         Button btnAddItem = findViewById(R.id.btnAddItem);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //verificando se os campos foram preenchidos
                 if (photoSelected == null) {
                     Toast.makeText(NewItemActivity.this, "É necessário selecionar uma imagem!", Toast.LENGTH_LONG).show();
                     return;
@@ -64,6 +66,7 @@ public class NewItemActivity extends AppCompatActivity {
 
                 EditText editText = findViewById(R.id.etTitle);
                 String title = editText.getText(). toString();
+                //caso os campos estejam vazios ou nenhuma imagem tenha sido escolhida, irá exibir um mensagem de erro
                 if (title.isEmpty()) {
                     Toast.makeText(NewItemActivity.this, "É necessário inserir um título", Toast.LENGTH_LONG).show();
                     return;
@@ -76,11 +79,16 @@ public class NewItemActivity extends AppCompatActivity {
                     return;
                 }
 
+                //criando intent para guardar dados a serem retornados para MainActivity
                 Intent i = new Intent();
+                //estabelecendo o Uri da imagem escolhida dentro da inet
                 i.setData(photoSelected);
+                //estabelecendo título e descrição
                 i.putExtra("title", title);
                 i.putExtra("description", description);
+                //usando o método setResult para indicar o resultado da Activity(o RESULT_OK indica que ha dados de retorno)
                 setResult(Activity.RESULT_OK,i);
+                //Activity finalizada
                 finish();
             }
         });
@@ -88,10 +96,15 @@ public class NewItemActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        //verificando se requestCode é referente ao fornecido chamando startActivityForResult com o id PHOTO_PICKER_REQUEST
         if (requestCode == PHOTO_PICKER_REQUEST) {
+            //verificando se ResultCode é sucesso
             if (resultCode == Activity.RESULT_OK) {
                 photoSelected = data.getData();
+                //obtendo o ImageView e colocando o Uri nele para que a foto seja exibida na app
                 ImageView imvfotoPreview = findViewById(R.id.imvfotoPreview);
+                //obtendo o Uri da foto e guardando dentro do atributo photoSelect
                 imvfotoPreview.setImageURI(photoSelected);
             }
         }

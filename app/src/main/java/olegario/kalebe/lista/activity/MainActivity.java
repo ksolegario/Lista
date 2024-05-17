@@ -26,6 +26,8 @@ import olegario.kalebe.lista.model.MyItem;
 public class MainActivity extends AppCompatActivity {
 
     static int NEW_ITEM_REQUEST =1;
+
+    //definindo lista de itens
     List<MyItem> itens = new ArrayList<>();
     MyAdapter myAdapter;
 
@@ -55,16 +57,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Obtendo RecycleView
         RecyclerView rvItens = findViewById(R.id.rvItens);
 
+        //criando o MyAdapter e ele é estabelecido no RecycleView
         myAdapter = new MyAdapter(this, itens);
         rvItens.setAdapter(myAdapter);
 
+        //Metodo setHasFixedSize indica ao Recycke que nao há variação de tamanho entre os itens da lista
         rvItens.setHasFixedSize(true);
 
+        //criando gerenciador de layout do tipo linear
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+
+        //Estabelendo no Recycle
         rvItens.setLayoutManager(layoutManager);
 
+        // Criando decolador para a lista, que consiste apenas em uma linha separando cada item e estabelecendo em Recycle
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvItens.getContext(), DividerItemDecoration.VERTICAL);
         rvItens.addItemDecoration(dividerItemDecoration);
     }
@@ -72,13 +81,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        //verificando se as condições foram cumpridas
         if (requestCode == NEW_ITEM_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
+
+                //se for veredito, criamos um instancia de MyItem para guardar os dados do item
                 MyItem myItem = new MyItem();
+
+                //obtendo dados retornados de NewItemActivity e guardando em myItem
                 myItem.title = data.getStringExtra("title");
                 myItem.description = data.getStringExtra("description");
                 myItem.photo = data.getData();
+
+                //adicionando o item em uma lista de itens
                 itens.add(myItem);
+
+                //notificando o Adapter para que um novo item seja mostrado no RecycleView
                 myAdapter.notifyItemInserted(itens.size()-1);
             }
         }
