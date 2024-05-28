@@ -2,6 +2,8 @@ package olegario.kalebe.lista.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,12 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import olegario.kalebe.lista.R;
 import olegario.kalebe.lista.adapter.MyAdapter;
 import olegario.kalebe.lista.model.MyItem;
+import olegario.kalebe.lista.util.Util;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -92,7 +96,15 @@ public class MainActivity extends AppCompatActivity {
                 //obtendo dados retornados de NewItemActivity e guardando em myItem
                 myItem.title = data.getStringExtra("title");
                 myItem.description = data.getStringExtra("description");
-                myItem.photo = data.getData();
+                Uri selectedPhotoUri = data.getData();
+
+                try {
+                    Bitmap photo = Util.getBitmap(MainActivity.this, selectedPhotoUri, 100, 100);
+                    myItem.photo = photo;
+                }
+                catch ( FileNotFoundException e) {
+                    e.printStackTrace();
+                }
 
                 //adicionando o item em uma lista de itens
                 itens.add(myItem);

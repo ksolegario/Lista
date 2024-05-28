@@ -18,8 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import olegario.kalebe.lista.R;
+import olegario.kalebe.lista.model.NewItemActivityViewModel;
 
 public class NewItemActivity extends AppCompatActivity {
 
@@ -92,6 +94,15 @@ public class NewItemActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        NewItemActivityViewModel vm = new ViewModelProvider(this). get(NewItemActivityViewModel.class);
+
+        Uri selectPhotoLocation = vm.getSelectPhotoLocation();
+        if(selectPhotoLocation != null) {
+            ImageView imagefotoView = findViewById(R.id.imvfotoPreview);
+            imagefotoView.setImageURI(selectPhotoLocation);
+        }
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -101,11 +112,14 @@ public class NewItemActivity extends AppCompatActivity {
         if (requestCode == PHOTO_PICKER_REQUEST) {
             //verificando se ResultCode é sucesso
             if (resultCode == Activity.RESULT_OK) {
-                photoSelected = data.getData();
+                Uri photoSelected = data.getData();
                 //obtendo o ImageView e colocando o Uri nele para que a foto seja exibida na app
                 ImageView imvfotoPreview = findViewById(R.id.imvfotoPreview);
                 //obtendo o Uri da foto e guardando dentro do atributo photoSelect
                 imvfotoPreview.setImageURI(photoSelected);
+
+                NewItemActivityViewModel vm = new ViewModelProvider(this). get(NewItemActivityViewModel.class);
+                vm.getSelectPhotoLocation();
             }
         }
     }

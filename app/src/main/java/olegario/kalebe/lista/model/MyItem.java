@@ -1,11 +1,12 @@
 package olegario.kalebe.lista.model;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 public class MyItem {
 
     //tipo Uri, que guarda o endereço da imagem do item
-    public Uri photo;
+    public Bitmap photo;
 
     //tipo String, que guarda o título do item
     public String title;
