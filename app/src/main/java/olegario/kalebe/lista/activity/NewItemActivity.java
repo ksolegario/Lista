@@ -35,6 +35,20 @@ public class NewItemActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_item);
 
+        //o ViewModel referente a NewItemActivity(NewItemActivityViewModel) é obtido
+        NewItemActivityViewModel vm = new ViewModelProvider(this).get(NewItemActivityViewModel.class);
+
+        //obtendo endereço Uri guardado dentro do ViewModel
+        Uri selectPhotoLocation = vm.getSelectPhotoLocation();
+
+        //Caso o endereço nao seja nulo, o usuario escolheu uma imagem antes de rotacionar a tela
+        if (selectPhotoLocation != null) {
+
+            //setando a imagem no ImageView da tela
+            ImageView imvfotoPreview = findViewById(R.id.imvfotoPreview);
+            imvfotoPreview.setImageURI(selectPhotoLocation);
+        }
+
         //obtendo imagem do botão pelo seu id
         ImageButton imgCI = findViewById(R.id.imgCI);
         imgCI.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +71,7 @@ public class NewItemActivity extends AppCompatActivity {
 
         //obtendo Botão
         Button btnAddItem = findViewById(R.id.btnAddItem);
+
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,15 +109,6 @@ public class NewItemActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        NewItemActivityViewModel vm = new ViewModelProvider(this). get(NewItemActivityViewModel.class);
-
-        Uri selectPhotoLocation = vm.getSelectPhotoLocation();
-        if(selectPhotoLocation != null) {
-            ImageView imagefotoView = findViewById(R.id.imvfotoPreview);
-            imagefotoView.setImageURI(selectPhotoLocation);
-        }
-
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -110,16 +116,22 @@ public class NewItemActivity extends AppCompatActivity {
 
         //verificando se requestCode é referente ao fornecido chamando startActivityForResult com o id PHOTO_PICKER_REQUEST
         if (requestCode == PHOTO_PICKER_REQUEST) {
+
             //verificando se ResultCode é sucesso
             if (resultCode == Activity.RESULT_OK) {
                 Uri photoSelected = data.getData();
+
                 //obtendo o ImageView e colocando o Uri nele para que a foto seja exibida na app
                 ImageView imvfotoPreview = findViewById(R.id.imvfotoPreview);
+
                 //obtendo o Uri da foto e guardando dentro do atributo photoSelect
                 imvfotoPreview.setImageURI(photoSelected);
 
+                //Obtendo ViewModel
                 NewItemActivityViewModel vm = new ViewModelProvider(this). get(NewItemActivityViewModel.class);
-                vm.getSelectPhotoLocation();
+
+                //guardando dentro do ViewModel o endereço Uri da imagem escolhida
+                vm.setSelectPhotoLocation(photoSelected);
             }
         }
     }

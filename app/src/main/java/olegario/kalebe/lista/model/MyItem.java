@@ -5,7 +5,7 @@ import android.net.Uri;
 
 public class MyItem {
 
-    //tipo Uri, que guarda o endereço da imagem do item
+    //tipo Bitmap,  representa uma imagem carregada na memória
     public Bitmap photo;
 
     //tipo String, que guarda o título do item

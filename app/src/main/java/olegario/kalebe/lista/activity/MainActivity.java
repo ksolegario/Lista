@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,15 +25,13 @@ import java.util.List;
 
 import olegario.kalebe.lista.R;
 import olegario.kalebe.lista.adapter.MyAdapter;
+import olegario.kalebe.lista.model.MainActivityViewModel;
 import olegario.kalebe.lista.model.MyItem;
 import olegario.kalebe.lista.util.Util;
 
 public class MainActivity extends AppCompatActivity {
 
     static int NEW_ITEM_REQUEST =1;
-
-    //definindo lista de itens
-    List<MyItem> itens = new ArrayList<>();
     MyAdapter myAdapter;
 
     @Override
@@ -63,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Obtendo RecycleView
         RecyclerView rvItens = findViewById(R.id.rvItens);
+
+        //o ViewModel referente a MainActivity(MainActivity) é obtido
+        MainActivityViewModel vm = new ViewModelProvider(this). get(MainActivityViewModel.class);
+
+        //lista de itens é obtida a partir do ViewModel e repassada para o Adapter
+        List<MyItem> itens = vm.getItens();
 
         //criando o MyAdapter e ele é estabelecido no RecycleView
         myAdapter = new MyAdapter(this, itens);
@@ -99,12 +104,23 @@ public class MainActivity extends AppCompatActivity {
                 Uri selectedPhotoUri = data.getData();
 
                 try {
+                    //carrega uma imagem e a guarda dentro de um Bitmap
                     Bitmap photo = Util.getBitmap(MainActivity.this, selectedPhotoUri, 100, 100);
+
+                    // guarda o Birmap da imagem dento e um objeto do tipo MyItem
                     myItem.photo = photo;
                 }
+
+                //só é disparado caso o arquivo de imagem nao seja encontrado
                 catch ( FileNotFoundException e) {
                     e.printStackTrace();
                 }
+
+                //o ViewModel referente a MainActivity(MainActivity) é obtido
+                MainActivityViewModel vm = new ViewModelProvider( this ).get(MainActivityViewModel.class);
+
+                //lista de itens é obtida a partir do ViewModel e repassada para o Adapter
+                List<MyItem> itens = vm.getItens();
 
                 //adicionando o item em uma lista de itens
                 itens.add(myItem);
