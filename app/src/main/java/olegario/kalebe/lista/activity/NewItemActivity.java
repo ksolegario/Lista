@@ -27,7 +27,6 @@ public class NewItemActivity extends AppCompatActivity {
 
     static int PHOTO_PICKER_REQUEST = 1;
     // atributo photoSelect do tipo Uri(um endereço que esta localizado em outras apps). Dessa forma, photoSelect guardara o endereço a foto selcionada pelo usuario, e nao a foto em si
-    Uri photoSelected = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +74,8 @@ public class NewItemActivity extends AppCompatActivity {
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Uri photoSelected = vm.getSelectPhotoLocation();
                 //verificando se os campos foram preenchidos
                 if (photoSelected == null) {
                     Toast.makeText(NewItemActivity.this, "É necessário selecionar uma imagem!", Toast.LENGTH_LONG).show();
@@ -132,7 +133,9 @@ public class NewItemActivity extends AppCompatActivity {
 
                 //guardando dentro do ViewModel o endereço Uri da imagem escolhida
                 vm.setSelectPhotoLocation(photoSelected);
+
             }
+
         }
     }
 
